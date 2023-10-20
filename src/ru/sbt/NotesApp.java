@@ -17,13 +17,16 @@ public class NotesApp {
     public NotesApp() {
         frame = new JFrame("Notes Application");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(600, 400);
+        frame.setSize(800, 600);
+        frame.setLayout(new BorderLayout());
 
-        titleField = new JTextField(20);
+// Create a top panel for input
+        JPanel inputPanel = new JPanel(new BorderLayout());
+        inputPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        titleField = new JTextField();
+        titleField.setBorder(BorderFactory.createTitledBorder("Title"));
         contentArea = new JTextArea(10, 40);
-
-        listModel = new DefaultListModel<>();
-        noteList = new JList<>(listModel);
+        contentArea.setBorder(BorderFactory.createTitledBorder("Content"));
 
         JButton addButton = new JButton("Add Note");
         addButton.addActionListener(new ActionListener() {
@@ -32,15 +35,22 @@ public class NotesApp {
             }
         });
 
-        JPanel inputPanel = new JPanel();
-        inputPanel.add(new JLabel("Title: "));
-        inputPanel.add(titleField);
-        inputPanel.add(new JLabel("Content: "));
-        inputPanel.add(contentArea);
-        inputPanel.add(addButton);
+        inputPanel.add(titleField, BorderLayout.NORTH);
+        inputPanel.add(new JScrollPane(contentArea), BorderLayout.CENTER);
+        inputPanel.add(addButton, BorderLayout.SOUTH);
 
-        frame.add(inputPanel, BorderLayout.NORTH);
-        frame.add(new JScrollPane(noteList), BorderLayout.CENTER);
+// Create a list panel
+        JPanel listPanel = new JPanel(new BorderLayout());
+        listPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        listModel = new DefaultListModel<>();
+        noteList = new JList<>(listModel);
+        noteList.setBorder(BorderFactory.createTitledBorder("Notes List"));
+
+        listPanel.add(new JScrollPane(noteList), BorderLayout.CENTER);
+
+// Add panels to the frame
+        frame.add(inputPanel, BorderLayout.WEST);
+        frame.add(listPanel, BorderLayout.CENTER);
 
         frame.setVisible(true);
     }
